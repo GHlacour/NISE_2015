@@ -1,0 +1,30 @@
+#!/bin/csh
+#PBS -N NISE3
+#PBS -l nodes=1:ppn=8
+
+setenv OMP_NUM_THREADS 8
+setenv MKL_NUM_THREADS 1
+echo $MKL_NUM_THREADS
+##PBS -l host=sm-node004-mgmt
+
+/usr/local/bin/qstat -f $PBS_JOBID -1 | grep exec_host
+
+setenv WD $PBS_O_WORKDIR
+
+echo $TMPDIR
+cd $TMPDIR
+
+cp $WD/run $TMPDIR
+cp $WD/inp* $TMPDIR
+cp $WD/stochastic $TMPDIR
+
+./run
+
+~/program/NISE_2015/NISE3/translate inpTra
+time ~/program/NISE_2015/NISE3/NISE3 input2D
+~/program/NISE_2015/NISE3/2DFFT input2D
+
+cp *.log $WD
+cp *.dat $WD
+
+/usr/local/bin/qstat -f $PBS_JOBID | grep resources
