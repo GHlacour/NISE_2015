@@ -1,15 +1,13 @@
 #!/bin/csh
-#PBS -N NISE3
-#PBS -l nodes=1:ppn=8
+#SBATCH --job-name NISE3
+#SBATCH --nodes=1
+#SBATCH --ntasks=8
 
 setenv OMP_NUM_THREADS 8
 setenv MKL_NUM_THREADS 1
 echo $MKL_NUM_THREADS
-##PBS -l host=sm-node004-mgmt
 
-/usr/local/bin/qstat -f $PBS_JOBID -1 | grep exec_host
-
-setenv WD $PBS_O_WORKDIR
+setenv WD $SLURM_SUBMIT_DIR
 
 echo $TMPDIR
 cd $TMPDIR
@@ -27,4 +25,3 @@ time ~/program/NISE_2015/NISE3/NISE3 input2D
 cp *.log $WD
 cp *.dat $WD
 
-/usr/local/bin/qstat -f $PBS_JOBID | grep resources
