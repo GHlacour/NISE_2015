@@ -1,5 +1,5 @@
 # Makefile
-MACHINE=bohr
+MACHINE=peri
 
 ### My settings
 ifeq ($(MACHINE), mymachine)
@@ -10,6 +10,16 @@ FFTW3=     # Libraries for fftw3
 FFTW3L=    # Location of libfftw3
 FFTW3I=    # Location of fftw3.h file
 CC_FLAGS=  # Optional compiler flags
+endif
+
+### My settings
+ifeq ($(MACHINE), peri)
+CC = icc
+FFTW3=-lfftw3
+FFTW3L = -L/cm/shared/apps/intel/compilers_and_libraries/linux/lib/intel64
+FFTW3I = -qopenmp
+CC_FLAGS = -B -O3 -lm -qopenmp
+LAPACK = -llapack -lblas -lpthread
 endif
 
 ### My settings
