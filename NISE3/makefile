@@ -1,5 +1,14 @@
 # Makefile
-MACHINE=peri
+
+### Default settings
+ifeq ($(MACHINE), )
+CC = gcc
+FFTW3=-lfftw3
+FFTW3L = -L/cm/shared/apps/intel/compilers_and_libraries/linux/lib/intel64
+FFTW3I = -fopenmp
+CC_FLAGS = -B -O3 -lm -fopenmp
+LAPACK = -llapack -lblas -lpthread
+endif
 
 ### My settings
 ifeq ($(MACHINE), mymachine)
@@ -113,6 +122,16 @@ CC_FLAGS = -B -O3 -lm -openmp
 LAPACK = -mkl -lmkl_intel_lp64 -lmkl_core -liomp5 -lmkl_intel_thread -lpthread
 #LAPACKL = -L/usr/lib64/atlas
 #LAPACKL = -L$(LAPACK_DIR) -L$(BLASDIR)
+endif
+
+### Compiler Settings Nieuwpoort
+ifeq ($(MACHINE), nieuwpoort)
+CC = icc
+FFTW3=-lfftw3
+FFTW3L=-L$(FFTWDIR) -L/cm/shared/apps/intel/compilers_and_libraries/linux/lib/intel64
+FFTW3I=-I$(FFTWINCLUDE) -qopenmp
+CC_FLAGS = -B -O3 -lm -qopenmp
+LAPACK = -mkl -lmkl_intel_lp64 -lmkl_core -liomp5 -lmkl_intel_thread -lpthread
 endif
 
 
